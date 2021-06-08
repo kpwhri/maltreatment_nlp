@@ -4,20 +4,27 @@ hit_pat = r'hit|attack|struck|beat|punch'
 family = (
     r'((his|her|their|(pt|patient|client)\W?s?|mom\W?s?|dad\W?s?)\W*)?'
     r'((older|younger|elder|bio|biological|adopted|adoptive)\W*)?'
-    r'((step|ex)\W*)?'
+    r'((step|ex)\W*)*'
     r'\b('
     r'father|dad|brother|bro|mom|mother|sis|sister|aunt|uncle|relative|parents?'
     r'|bf|boy\W?friend|girl\W?friend|gf|husband|wife|partner|family|care\W?giver'
     r'|grandfather|grandpa|grandma|grandmother|cousin|nephew|niece'
     r')\b'
 )
-by_family = fr'by\W*{family}'
-from_family = fr'(by|from)\W*{family}'
+by_family = fr'by\W*(an?\W*)?{family}'
+from_family = fr'(by|from)\W*(an?\W*)?{family}'
 
 ABUSE_PAT = re.compile(
     r'('
     rf'(emotion|child|physical|sexual)\w*\W*(abused?|abusive|haras|molest[ei])(\s+\w+){{0,5}}\s+{from_family}'
     rf'|{family}(\s+\w+){{0,2}}\s+(emotion|child|physical|sexual)\w*\W*(abused?|abusive|haras|molest[ei])'
+    r')',
+    re.I
+)
+
+ABUSIVE_PAT = re.compile(
+    r'('
+    rf'abusive\s+({family}|childhood|adolescence|growing\W?up)'
     r')',
     re.I
 )
@@ -50,8 +57,8 @@ FEAR_PAT = re.compile(  # not currently used
 
 HISTORY_PAT = re.compile(
     rf'('
-    rf'\b((history|hx|signs)\s+of|h/o)\w*(\s+\w+){{0,5}}\s*'
-    rf'(abus|rap(e|ing)|maltreat|assault|harm|haras|molest|{hit_pat})\w*'
+    rf'\b((history|hx|signs|victim)\s+of|h/o)\w*(\s+\w+){{0,5}}\s+'
+    rf'(abus|rap(e|ing)|maltreat|assault|haras|molest|{hit_pat})\w*'  # removed harm: always self-harm
     rf')',
     re.I
 )
@@ -83,7 +90,6 @@ CPS_PAT = re.compile(
     r'|\bcps\b'
     r'|dep(t|artment)(\W+\w+){0,3}\W*(child|family)(\W+\w+){0,3}\W*service'
     r'|dcfs\W*report'
-    r'|child\W*maltreatment'
     r')',
     re.I
 )
@@ -92,8 +98,17 @@ CHILD_MALTREATMENT_PAT = re.compile(
     r'child\W*maltreatment'
 )
 
+CODE_PAT = re.compile(
+    r'('
+    r'sexual\s+abuse\s+of\s+child\s+or\s+adolescent'
+    r'|sexual\s+abuse\s+of\s+adolescent'
+    r')'
+)
+
 ALL_PATTERNS = {
     'ABUSE_PAT': ABUSE_PAT,
+    # 'FEAR_PAT': FEAR_PAT,  # not used: not high-PPV enough
+    'ABUSIVE_PAT': ABUSIVE_PAT,
     'NEGLECT_PAT': NEGLECT_PAT,
     'HITTING_PAT': HITTING_PAT,
     'CPS_PAT': CPS_PAT,
