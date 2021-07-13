@@ -16,8 +16,8 @@ from_family = fr'(by|from)\W*(an?\W*)?{family}'
 
 ABUSE_PAT = re.compile(
     r'('
-    rf'(emotion|child|physical|sexual)\w*\W*(abused?|abusive|haras|molest[ei])(\s+\w+){{0,5}}\s+{from_family}'
-    rf'|{family}(\s+\w+){{0,2}}\s+(emotion|child|physical|sexual)\w*\W*(abused?|abusive|haras|molest[ei])'
+    rf'(emotion|child|physical|sexual|verbal)\w*\W*(abused?|abusive|haras|molest[ei])(\s+\w+){{0,5}}\s+{from_family}'
+    rf'|{family}(\s+\w+){{0,2}}\s+(emotion|child|physical|sexual|verbal)\w*\W*(abused?|abusive|haras|molest[ei])'
     r')',
     re.I
 )
@@ -25,6 +25,7 @@ ABUSE_PAT = re.compile(
 ABUSIVE_PAT = re.compile(
     r'('
     rf'abusive\s+({family}|childhood|adolescence|growing\W?up)'
+    rf'|{{family}}\s+abusive\s+(emotionally|physically|verbally|sexually)'
     r')',
     re.I
 )
@@ -51,7 +52,7 @@ SIGNS_PAT = re.compile(
 )
 
 FEAR_PAT = re.compile(  # not currently used
-    rf'(fear|scared|afraid) of {family}',
+    rf'(fear(ful)?|scared|afraid|intimated)\s+(by|of)\s+{family}',
     re.I
 )
 
@@ -95,19 +96,24 @@ CPS_PAT = re.compile(
 )
 
 CHILD_MALTREATMENT_PAT = re.compile(
-    r'child\W*maltreatment'
+    r'child\W*maltreatment',
+    re.I
 )
 
 CODE_PAT = re.compile(
     r'('
     r'sexual\s+abuse\s+of\s+child\s+or\s+adolescent'
     r'|sexual\s+abuse\s+of\s+adolescent'
-    r')'
+    r'|confirmed\s+victim\s+of\s+sexual\s+abuse\s+in\s+childhood'
+    r'|sexual\s+abuse\s+victim'
+    r')',
+    re.I
 )
 
 ALL_PATTERNS = {
     'ABUSE_PAT': ABUSE_PAT,
-    # 'FEAR_PAT': FEAR_PAT,  # not used: not high-PPV enough
+    'CODE_PAT': CODE_PAT,
+    'FEAR_PAT': FEAR_PAT,
     'ABUSIVE_PAT': ABUSIVE_PAT,
     'NEGLECT_PAT': NEGLECT_PAT,
     'HITTING_PAT': HITTING_PAT,
