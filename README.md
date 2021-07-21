@@ -20,6 +20,7 @@ See example in Jupyter notebook: `nbs/run_algorithm.ipynb`
 # Pattern Descriptions
 
 | Pattern | Description | Notes |
+| --- | --- | --- |
 | ABUSE_PAT | General description of abuse/harassment | Good |
 | ABUSIVE_PAT | Abusive family member | May not describe abuse of target individual |
 | GENERAL_ABUSE_PAT | Generic abuse for exploration | Do not use in algorithm: Too many FPs |
