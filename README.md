@@ -34,3 +34,8 @@ See example in Jupyter notebook: `nbs/run_algorithm.ipynb`
 | CPS_PAT | Description of CPS involvement | Good |
 | CHILD_MALTREATMENT_PAT | Description of child maltreatment | Needs review |
 | CODE_PAT | Looking for dumping of diagnostic/related codes in text | Good |
+
+
+# License
+
+Licensed under MIT: https://kpwhri.mit-license.org/
