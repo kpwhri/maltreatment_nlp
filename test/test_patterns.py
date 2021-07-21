@@ -45,6 +45,7 @@ from maltreatment_nlp.patterns import ALL
     'child maltreatment',
     'child protective services',
     'department of child and family services',
+    'possible molestation of this patient',
 ])
 def test_all_patterns_match(text):
     for pattern in ALL:
