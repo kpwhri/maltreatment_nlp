@@ -1,16 +1,19 @@
 import re
 
 hit_pat = r'hit|attack|struck|beat|punch'
-family = (
+_family = (
     r'((his|her|their|(pt|patient|client)\W?s?|mom\W?s?|dad\W?s?)\W*)?'
     r'((older|younger|elder|bio|biological|adopted|adoptive)\W*)?'
     r'((step|ex)\W*)*'
     r'\b('
     r'father|dad|brother|bro|mom|mother|sis|sister|aunt|uncle|relative|parents?'
-    r'|bf|boy\W?friend|girl\W?friend|gf|husband|wife|partner|family|care\W?giver'
+    r'{}|family|care\W?giver'
     r'|grandfather|grandpa|grandma|grandmother|cousin|nephew|niece'
     r')\b'
 )
+strict_family = _family.format('')  # no husband/wife/bf/gf in this context
+# parent possibly has one of these:
+family = _family.format(r'|bf|boy\W?friend|girl\W?friend|gf|husband|wife|partner')
 by_family = fr'by\W*(an?\W*)?{family}'
 from_family = fr'(by|from)\W*(an?\W*)?{family}'
 
@@ -24,8 +27,8 @@ ABUSE_PAT = re.compile(
 
 ABUSIVE_PAT = re.compile(
     r'('
-    rf'abusive\s+({family}|childhood|adolescence|growing\W?up)'
-    rf'|{family}\s+abusive\s+(emotionally|physically|verbally|sexually)'
+    rf'abusive\s+({strict_family}|childhood|adolescence|growing\W?up)'
+    rf'|{strict_family}\s+abusive\s+(emotionally|physically|verbally|sexually)'
     r')',
     re.I
 )
