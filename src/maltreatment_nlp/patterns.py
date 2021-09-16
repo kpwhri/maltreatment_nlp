@@ -25,7 +25,7 @@ ABUSE_PAT = re.compile(
 ABUSIVE_PAT = re.compile(
     r'('
     rf'abusive\s+({family}|childhood|adolescence|growing\W?up)'
-    rf'|{{family}}\s+abusive\s+(emotionally|physically|verbally|sexually)'
+    rf'|{family}\s+abusive\s+(emotionally|physically|verbally|sexually)'
     r')',
     re.I
 )
