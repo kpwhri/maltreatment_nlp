@@ -1,6 +1,6 @@
 import pytest
 
-from maltreatment_nlp.patterns import ALL, ABUSIVE_PAT
+from maltreatment_nlp.patterns import ALL, ABUSIVE_PAT, HITTING_PAT
 
 
 @pytest.mark.parametrize('text', [
@@ -60,3 +60,34 @@ def test_all_patterns_match(text):
 ])
 def test_abusive_pattern(text, exp):
     assert bool(ABUSIVE_PAT.search(text)) == exp
+
+
+@pytest.mark.parametrize('text, exp', [
+    ('mom has hit patient', True),
+    ('brother hit her', True),
+    ('his father hit him', True),
+    ('mother punched her', True),
+    ('his brother accidentally hit him', False),
+    ('sister hit her', True),
+    ('her mother hit her', True),
+    ('hit by brother', True),
+    ('brother hit him', True),
+    ('her dad hit her', True),
+    ('her father hit her', True),
+    ('her father used to threaten her and hit her', True),
+    ('father hitting her', True),
+    ('his brother until he hits him', False),
+    ('his brother hits him', True),
+    ('hit by father', True),
+    ('dad beat him', True),
+    ('stepfather hit her', True),
+    ('hit by mom', True),
+    ('hit by her mom', True),
+    ('her sister and will hit her', False),
+    ('her parents she hit her', False),
+    ('mom calling states she hit her', False),
+    ('his father will hit him', True),
+    ('mother reported she hit her', False),
+])
+def test_hitting_pattern(text, exp):
+    assert bool(HITTING_PAT.search(text)) == exp

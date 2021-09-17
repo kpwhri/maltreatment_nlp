@@ -5,7 +5,7 @@ _family = (
     r'((his|her|their|(pt|patient|client)\W?s?|mom\W?s?|dad\W?s?)\W*)?'
     r'((older|younger|elder|bio|biological|adopted|adoptive)\W*)?'
     r'((step|ex)\W*)*'
-    r'\b('
+    r'('
     r'father|dad|brother|bro|mom|mother|sis|sister|aunt|uncle|relative|parents?'
     r'{}|family|care\W?giver'
     r'|grandfather|grandpa|grandma|grandmother|cousin|nephew|niece'
@@ -16,6 +16,8 @@ strict_family = _family.format('')  # no husband/wife/bf/gf in this context
 family = _family.format(r'|bf|boy\W?friend|girl\W?friend|gf|husband|wife|partner')
 by_family = fr'by\W*(an?\W*)?{family}'
 from_family = fr'(by|from)\W*(an?\W*)?{family}'
+
+target = r'\b(him|her|them|me|child|son|daughter|pt|patient|client)\b'
 
 ABUSE_PAT = re.compile(
     r'('
@@ -82,8 +84,13 @@ NEGLECT_PAT = re.compile(
 
 HITTING_PAT = re.compile(
     rf'('
-    rf'{family}(\s+\w+){{0,5}}\s+({hit_pat})\w*(\s+\w+){{0,2}}\s*\b(him|her|me|child|son|daughter|pt|patient|client)\b'
-    rf'|\b({hit_pat})\s*(\s+\w+){{0,2}}{by_family}'
+    # x hit pt
+    rf'{family}(\s+(has|had|will|have|did|would|used to|possibly)){{0,5}}'
+    rf'(\s+\w+\s+({target}\s+)?and)?'
+    rf'\s+({hit_pat})'
+    rf'\w*\s*{target}'
+    # hit by
+    rf'|\b({hit_pat})\s*{by_family}'
     rf')',
     re.I
 )
